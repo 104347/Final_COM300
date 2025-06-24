@@ -1,0 +1,61 @@
+import bpy
+
+bpy.context.scene.display.shading.light = 'STUDIO'
+
+# Ruta del archivo con la emoción (ajusta según tu PC)
+ruta_archivo = "G:/tareas/IA/Final/emocion.txt"
+
+# Leer emoción desde el archivo
+with open(ruta_archivo, "r", encoding="utf-8") as f:
+    emocion = f.read().strip().lower()
+
+
+# Referencia al mundo y nodos
+world = bpy.context.scene.world
+nodes = bpy.data.scenes["Scene"].node_tree.nodes
+
+# Función auxiliar para encontrar luz
+def aplicar_luz(color, energia):
+    for obj in bpy.data.objects:
+        if obj.type == 'LIGHT':
+            obj.data.color = color
+            obj.data.energy = energia
+            break
+
+# Aplicar configuración por emoción
+if emocion == "alegría":
+    bpy.data.scenes["Scene"].node_tree.nodes["RGB"].outputs[0].default_value = (1, 0.9, 0.7, 1)
+    bpy.context.scene.view_settings.exposure = 0.4
+
+elif emocion == "tristeza":
+    bpy.data.scenes["Scene"].node_tree.nodes["RGB"].outputs[0].default_value = (0.2, 0.3, 0.5, 1)
+    bpy.context.scene.view_settings.exposure = -1
+
+elif emocion == "ira":
+    bpy.data.scenes["Scene"].node_tree.nodes["RGB"].outputs[0].default_value = (1.0, 0.3, 0.3, 1)
+    bpy.context.scene.view_settings.exposure = -1
+
+elif emocion == "miedo":
+    bpy.data.scenes["Scene"].node_tree.nodes["RGB"].outputs[0].default_value = (0.2, 0.2, 0.6, 1)
+    bpy.context.scene.view_settings.exposure = -1
+
+elif emocion == "asco":
+    bpy.data.scenes["Scene"].node_tree.nodes["RGB"].outputs[0].default_value = (0.6, 0.9, 0.5, 1)
+    bpy.context.scene.view_settings.exposure = 0
+
+
+elif emocion == "neutral":
+    bpy.data.scenes["Scene"].node_tree.nodes["RGB"].outputs[0].default_value = (1.0, 1.0, 1.0, 1)
+    bpy.context.scene.view_settings.exposure = 0
+
+
+elif emocion == "amor":
+    bpy.data.scenes["Scene"].node_tree.nodes["RGB"].outputs[0].default_value = (1.0, 0.7, 0.9, 1)
+    bpy.context.scene.view_settings.exposure = 0.4
+
+elif emocion == "sorpresa":
+    bpy.data.scenes["Scene"].node_tree.nodes["RGB"].outputs[0].default_value = (1.0, 1.0, 0.9, 1)
+    bpy.context.scene.view_settings.exposure = 0
+
+else:
+    print(f"⚠️ Emoción '{emocion}' no reconocida. No se aplicaron cambios.")
